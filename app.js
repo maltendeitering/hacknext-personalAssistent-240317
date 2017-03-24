@@ -1,9 +1,9 @@
 var ConversationV1 = require('watson-developer-cloud/conversation/v1');
 var conversation = new ConversationV1({
-  username: 'bdd2b7ac-7d84-4056-b1c1-a6b41c8f763a', // replace with username from service key
-  password: 'o6HWdMILPwpx', // replace with password from service key
-  path: { workspace_id: 'c93795a4-572d-4cfd-a6b3-beb9b5561a2e' }, // replace with workspace ID
-  version_date: '2017-03-20'
+  username: '9705668a-3482-447c-8c08-dd3baa015f11', // replace with username from service key
+  password: '2DZDDJqM4aec', // replace with password from service key
+  path: { workspace_id: '569b828f-df25-468b-9179-57bb5c7ff196' }, // replace with workspace ID
+  version_date: '2017-03-24'
 });
 
 
