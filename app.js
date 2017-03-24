@@ -52,7 +52,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             newMessage = event.message.text;
-            Console.log(newMessage);
+            console.log(newMessage);
             conversation.message({
                   input: { text: newMessage },
                   context: context,
