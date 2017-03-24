@@ -52,7 +52,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             newMessage = event.message.text;
-            
+            Console.log(newMessage);
             conversation.message({
                   input: { text: newMessage },
                   context: context,
@@ -88,14 +88,13 @@ function sendMessage(sender,text) {
 
 // This function handles the response from Watson Conversation service
 function processResponse(err, response) {
-    var responseText;
     if (err) {
         res.send('Error in Watson Conversation');
     }
     else {
         context = response.context;
-        responseText = response.output.text[0];
-        if (response.intents[0].intent == 'hi') {
+        var responseText = response.output.text[0];
+        if (response.intents[0].intent === 'test_123') {
 
             request({
                 url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
@@ -108,7 +107,7 @@ function processResponse(err, response) {
                 }, function (error, res, body) {
                 if (!error && res.statusCode == 200) {
                     console.log(JSON.stringify(body));
-                    responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
+                    responseText = "Die Versicherungsprämie beträgt (netto):" + body.beitrag.netto;
                 }
             });
         }
