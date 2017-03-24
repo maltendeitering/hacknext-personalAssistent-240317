@@ -73,7 +73,7 @@ function sendMessage(sender,text) {
 // This function handles the response from Watson Conversation service
 function processResponse(err, response) {
     var responseText;
-    var priceString = "";
+    var accessAPI = false;
 
     if (err) {
         res.send('Error in Watson Conversation');
@@ -84,6 +84,8 @@ function processResponse(err, response) {
         var responseArray = response.output.nodes_visited;
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
+
+            accessAPI = true;
 
             var contract = {
             "vertrag":
@@ -114,11 +116,13 @@ function processResponse(err, response) {
                 if(body.status === 'OK') {
                     responseText = responseText + " Versicherungsprämie: " + body.beitrag.netto;
                     console.log(responseText);
+                    sendMessage(sender, responseText);
                 }
             }
         });
     }
-    sendMessage(sender, responseText);
+    if(!accessAPI)
+        sendMessage(sender, responseText);
     }
 };
 
