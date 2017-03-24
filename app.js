@@ -85,7 +85,7 @@ function processResponse(err, response) {
                     consol.log(error);
                 }
                 else {
-                    console.log(body);
+                    console.log(response.body);
                 }
             });
         }
