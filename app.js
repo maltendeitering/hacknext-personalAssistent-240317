@@ -59,11 +59,11 @@ function sendMessage(sender,text) {
             recipient: {id: sender},
             message: messageData,
         }
-    }, function (error, response, body) {
+    }, function (error, res, body) {
         if (error) {
             console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+        } else if (res.body.error) {
+            console.log('Error: ', res.body.error);
         }
     });
 };
@@ -103,8 +103,8 @@ function processResponse(err, response) {
                     "content-type": "application/json",
                 },
                     body: vertrag
-                }, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
+                }, function (error, res, body) {
+                if (!error && res.statusCode == 200) {
                     console.log(JSON.stringify(body));
                     var responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
                     sendMessage(sender, responseText);
