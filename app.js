@@ -15,22 +15,6 @@ var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXL
 var context = {};
 var sender;
 
-var contract = {
-            "vertrag":
-            {
-              "produkt":"RLV_BASIS",
-              "betrag":100000,
-              "beginn":"2017-04",
-              "vertragslaufzeit":10,
-              "raucherstatus":false
-            },
-              "vp":
-              {
-                "geburtsdatum":"1992-04-01",
-                "berufeingabe":"Industriekaufmann, Industriekauffrau"
-              }
-            }
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -98,7 +82,21 @@ function processResponse(err, response) {
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
 
-            console.log(JSON.stringify(response));
+            var contract = {
+            "vertrag":
+            {
+              "produkt": context.produkt,
+              "betrag": context.betrag,
+              "beginn": context.beginn,
+              "vertragslaufzeit": context.vertragslaufzeit,
+              "raucherstatus":false
+            },
+              "vp":
+              {
+                "geburtsdatum": context.geburtsdatum,
+                "berufeingabe": context.berufeingabe
+              }
+            }
 
         request({
             url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
