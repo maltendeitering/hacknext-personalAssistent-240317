@@ -1,5 +1,5 @@
 {
-	"name": "NodejsStarterApp",
+	"name": "marcel-testbot-190317",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -7,7 +7,9 @@
 	},
 	"dependencies": {
 		"express": "4.13.x",
-		"cfenv": "1.0.x"
+		"body-parser": "1.15.0",
+		"request": "2.72.0",
+		"watson-developer-cloud": "2.8.1"
 	},
 	"repository": {},
 	"engines": {
