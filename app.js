@@ -14,6 +14,22 @@ var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXL
 
 var context = {};
 
+var contract = {
+            "vertrag":
+            {
+              "produkt":"RLV_BASIS",
+              "betrag":100000,
+              "beginn":"2017-04",
+              "vertragslaufzeit":10,
+              "raucherstatus":false
+            },
+              "vp":
+              {
+                "geburtsdatum":"1992-04-01",
+                "berufeingabe":"Industriekaufmann, Industriekauffrau"
+              }
+            }
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -71,29 +87,14 @@ function sendMessage(sender,text) {
 
 // This function handles the response from Watson Conversation service
 function processResponse(err, response) {
+    var responseText;
     if (err) {
         res.send('Error in Watson Conversation');
     }
     else {
         context = response.context;
-        console.log(JSON.stringify(response, null, 2));
-        if (response.intents[0].intent === 'hi') {
-
-            var vertrag = {
-            "vertrag":
-            {
-              "produkt":"RLV_BASIS",
-              "betrag":100000,
-              "beginn":"2017-04",
-              "vertragslaufzeit":10,
-              "raucherstatus":false
-            },
-              "vp":
-              {
-                "geburtsdatum":"1992-04-01",
-                "berufeingabe":"Industriekaufmann, Industriekauffrau"
-              }
-            }
+        responseText = response.output.text[0];
+        if (response.intents[0].intent == 'hi') {
 
             request({
                 url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
@@ -102,15 +103,15 @@ function processResponse(err, response) {
                 headers: {
                     "content-type": "application/json",
                 },
-                    body: vertrag
+                    body: contract
                 }, function (error, res, body) {
                 if (!error && res.statusCode == 200) {
                     console.log(JSON.stringify(body));
-                    var responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
-                    sendMessage(sender, responseText);
+                    responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
                 }
             });
         }
+        sendMessage(sender, responseText);
     }
 };
 
