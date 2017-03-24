@@ -6,7 +6,6 @@ var conversation = new ConversationV1({
   version_date: '2017-03-24'
 });
 
-
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
@@ -49,11 +48,6 @@ app.post('/webhook/', function (req, res) {
         }
     }
     res.sendStatus(200);
- 
-    //        Calling the Weather App. Change the address below to the url of your Weather app. Response is sent back to the user via the sendMessage function //
-    //        request("https://whatistheweather.mybluemix.net/getWeather?text=" + text, function (error, response, body) {
-    //           sendMessage(sender, body);
-    //        });
 });
 
 
