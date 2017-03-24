@@ -73,6 +73,8 @@ function sendMessage(sender,text) {
 // This function handles the response from Watson Conversation service
 function processResponse(err, response) {
     var responseText;
+    var priceString = "";
+
     if (err) {
         res.send('Error in Watson Conversation');
     }
@@ -110,8 +112,8 @@ function processResponse(err, response) {
             if (!error && res.statusCode == 200) {
                 console.log(JSON.stringify(body));
                 if(body.status === 'OK') {
-                    console.log("Status OK");
-                    responseText = "Die Versicherungsprämie beträgt (netto):" + body.beitrag.netto;
+                    responseText = responseText + " Versicherungsprämie: " + body.beitrag.netto;
+                    console.log(responseText);
                 }
             }
         });
