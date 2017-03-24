@@ -104,17 +104,19 @@ function processResponse(err, response) {
 
 function callAllianzAPI(vertrag) {
     request({
-        url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote",
-        method: "POST",
-        json: true,
-        headers: {
-            "content-type": "application/json",
-        },
-            body: vertrag
-        }, function (error, response, body) {
-         if (!error && response.statusCode == 200) {
+    url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote",
+    method: "POST",
+    json: true,
+    headers: {
+        "content-type": "application/json",
+    },
+    body: vertrag
+}, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
         console.log(JSON.stringify(body));
-    });
+        
+    }
+});
 };
 
 // // Process the conversation response.
