@@ -40,13 +40,18 @@ app.post('/webhook/', function (req, res) {
                   input: { text: newMessage },
                   context: context,
                 }, 
-            function(err, response) {
-            if (err) {
-                res.send('Error in Watson Conversation Error');
-            }
-                context = response.context;
-                sendMessage(sender, response.output.text[0]);
-            });
+                function(err, response) {
+                if (err) {
+                    res.send('Error in Watson Conversation Error');
+                }
+                else {
+                    context = response.context;
+                    sendMessage(sender, response.output.text[0]);
+                    console.log(JSON.stringify(response, null, 2));
+                    if (response.intents.length > 0) {
+                        console.log('Detected intent: #' + response.intents[0].intent);
+                    }
+               }});
 
             //sendMessage(sender, "Text received, Echo: " + newMessage.substring(0, 200));
         }
