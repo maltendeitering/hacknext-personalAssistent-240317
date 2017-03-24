@@ -105,11 +105,11 @@ function processResponse(err, response) {
                     body: vertrag
                 }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log(JSON.stringify(body));   
+                    console.log(JSON.stringify(body));
+                    var responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
+                    sendMessage(sender, responseText);
                 }
             });
-            var responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
-            sendMessage(sender, responseText);
         }
     }
 };
