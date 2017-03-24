@@ -72,12 +72,13 @@ function sendMessage(sender,text) {
 
 // This function handles the response from Watson Conversation service
 function processResponse(err, response) {
+    var responseText;
     if (err) {
         res.send('Error in Watson Conversation');
     }
     else {
         context = response.context;
-        var responseText = response.output.text[0];
+        responseText = response.output.text[0];
         var responseArray = response.output.nodes_visited;
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
@@ -89,7 +90,6 @@ function processResponse(err, response) {
               "betrag": context.betrag,
               "beginn": context.beginn,
               "vertragslaufzeit": context.vertragslaufzeit,
-              "raucherstatus":false
             },
               "vp":
               {
@@ -98,7 +98,7 @@ function processResponse(err, response) {
               }
             }
 
-        request({
+            request({
             url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
             method: "POST",
             json: true,
@@ -109,7 +109,10 @@ function processResponse(err, response) {
             }, function (error, res, body) {
             if (!error && res.statusCode == 200) {
                 console.log(JSON.stringify(body));
-                responseText = "Die Versicherungsprämie beträgt (netto):" + body.beitrag.netto;
+                if(body.status === 'OK') {
+                    console.log("Status OK");
+                    responseText = "Die Versicherungsprämie beträgt (netto):" + body.beitrag.netto;
+                }
             }
         });
     }
