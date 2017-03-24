@@ -76,7 +76,6 @@ function processResponse(err, response) {
     }
     else {
         context = response.context;
-        sendMessage(sender, response.output.text[0]);
         console.log(JSON.stringify(response, null, 2));
         if (response.intents[0].intent === 'hi') {
 
@@ -96,28 +95,25 @@ function processResponse(err, response) {
               }
             }
 
-            callAllianzAPI(vertrag);
+            request({
+                url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
+                method: "POST",
+                json: true,
+                headers: {
+                    "content-type": "application/json",
+                },
+                    body: vertrag
+                }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(JSON.stringify(body));   
+                }
+            });
+            var responseText = response.output.text[0] + " Die Versicherungsprämie beträgt (netto): " + body.beitrag.netto;
+            sendMessage(sender, responseText);
         }
     }
 };
 
-
-function callAllianzAPI(vertrag) {
-    request({
-    url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote",
-    method: "POST",
-    json: true,
-    headers: {
-        "content-type": "application/json",
-    },
-    body: vertrag
-}, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-        console.log(JSON.stringify(body));
-        
-    }
-});
-};
 
 // // Process the conversation response.
 // function processResponse(err, response) {
