@@ -95,7 +95,9 @@ function processResponse(err, response) {
         context = response.context;
         var responseText = response.output.text[0];
         if (response.intents>0) {
-            if(response.intents[0].intent === 'test_123') {
+            if(response.output.nodes_visited.indexOf("weitergabe_API") > -1) {
+
+            console.log("Trigger");
 
             request({
                 url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
