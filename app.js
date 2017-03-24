@@ -93,7 +93,7 @@ function processResponse(err, response) {
                     console.log('Error: ', error);
                 } else {
                     console.log('Success');
-                    console.log(response.statusCode, body);
+                    console.log(response.statusCode, response.token);
             }
             });
         }
