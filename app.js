@@ -80,21 +80,13 @@ function processResponse(err, response) {
         console.log(JSON.stringify(response, null, 2));
         if (response.intents[0].intent === 'hi') {
             //Lets configure and request
-            request({
-                url: 'https://versdiagnose.hacknext.de/external/getlogintoken',
-                method: 'POST',
-                //Lets post the following key/values as form
-                json: {
-                    user_name: 'abcd',
-                    password: 'efgh'
-                }
+            request.post({
+              headers: {'content-type' : 'application/json'},
+              url:     'https://versdiagnose.hacknext.de/external/getlogintoken',
+              method: 'POST'
+              json: {user_name: 'abcd', password: 'defgh'}
             }, function(error, response, body){
-                if(error) {
-                    console.log('Error: ', error);
-                } else {
-                    console.log('Success');
-                    console.log(JSON.stringify(response, null, 2));
-            }
+              console.log(body);
             });
         }
     }
