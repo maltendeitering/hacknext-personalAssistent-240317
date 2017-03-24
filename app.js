@@ -11,6 +11,9 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var app = express();
 var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXLKwF41VZBSoIxd7xaXuKW7hlqznXelry9u05Gg51SsZAwUM878wr3rzGPVzpH32gkq1Q3HZAk2YdQhN7FGJ2W1ieUrsDwVKzHqb1OEQfpUgZDZD";
+
+var context = {};
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -35,13 +38,14 @@ app.post('/webhook/', function (req, res) {
             
             conversation.message({
                   input: { text: newMessage },
-                  context : {},
+                  context: context,
                 }, 
-            function(err, data) {
+            function(err, response) {
             if (err) {
                 res.send('Error in Watson Conversation Error');
             }
-                sendMessage(sender, data.output.text[0]);
+                context = response.context;
+                sendMessage(sender, response.output.text[0]);
             });
 
             //sendMessage(sender, "Text received, Echo: " + newMessage.substring(0, 200));
