@@ -80,16 +80,41 @@ function processResponse(err, response) {
         console.log(JSON.stringify(response, null, 2));
         if (response.intents[0].intent === 'hi') {
 
-            request.post('https://versdiagnose.hacknext.de/external/getlogintoken', {user_name: 'abcd', password: 'defgh'}, function  (error, response, body) {
-                if(error) {
-                    consol.log(error);
-                }
-                else {
-                    console.log(response.body);
-                }
-            });
+            var vertrag = {
+            "vertrag":
+            {
+              "produkt":"RLV_BASIS",
+              "betrag":100000,
+              "beginn":"2017-04",
+              "vertragslaufzeit":10,
+              "raucherstatus":false
+            },
+              "vp":
+              {
+                "geburtsdatum":"1992-04-01",
+                "berufeingabe":"Industriekaufmann, Industriekauffrau"
+              }
+            }
+
+            callAllianzAPI(vertrag);
         }
     }
+};
+
+
+function callAllianzAPI(vertrag) {
+    request({
+        url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote",
+        method: "POST",
+        json: true,
+        headers: {
+            "content-type": "application/json",
+        },
+            body: vertrag
+        }, function (error, response, body) {
+         if (!error && response.statusCode == 200) {
+        console.log(JSON.stringify(body));
+    });
 };
 
 // // Process the conversation response.
