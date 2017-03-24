@@ -90,9 +90,10 @@ function processResponse(err, response) {
                 }
             }, function(error, response, body){
                 if(error) {
-                    console.log(error);
+                    console.log('Error: ', error);
                 } else {
-                    console.log(response.status, body);
+                    console.log('Success');
+                    console.log(response.statusCode, body);
             }
             });
         }
