@@ -94,7 +94,7 @@ function processResponse(err, response) {
     else {
         context = response.context;
         var responseText = response.output.text[0];
-        if (response.intents[0].intent === 'test_123') {
+        if (response.intents && response.intents[0].intent === 'test_123') {
 
             request({
                 url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
