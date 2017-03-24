@@ -80,7 +80,14 @@ function processResponse(err, response) {
         console.log(JSON.stringify(response, null, 2));
         if (response.intents[0].intent === 'hi') {
 
-            console.log('Intent detected');
+            request.post('https://versdiagnose.hacknext.de/external/getlogintoken', {user_name: 'abcd', password: 'defgh'}, function  (error, response, body) {
+                if(error) {
+                    consol.log(error);
+                }
+                else {
+                    console.log(body);
+                }
+            });
         }
     }
 };
