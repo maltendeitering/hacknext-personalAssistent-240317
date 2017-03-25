@@ -100,37 +100,7 @@ function processResponse(err, response) {
                 responseText = responseText + " Bei deinem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
             }
         }
-        if(responseArray.indexOf("suche_vertreter") > -1) {
-            accessGoogleAPI = true;
-            console.log("Adresse: " + context.address);
-            request('https://maps.googleapis.com/maps/api/geocode/json?address=' + context.address, function (error, response, body) {
-              if (!error && response.statusCode == 200) {
-                var importedJSON = JSON.parse(body);
-                
-                //console.log(importedJSON.results[0]);
-                importedJSON = importedJSON.results[0];
-
-                //console.log(importedJSON.geometry.location);
-                var lat= importedJSON.geometry.location.lat
-                var lng=importedJSON.geometry.location.lng
-                //console.log (lat);
-                //console.log (lng);
-                
-                
-                request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBAFHA-M8-_14BSARNkW737QlnsGj_JUIw&location='+lat+','+lng+'&rankby=distance&name=Allianz', function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    var importedJSON = JSON.parse(body);
-                 
-                    console.log(importedJSON.results[0].name);
-                    console.log(importedJSON.results[0].vicinity);
-                    var responseText = "Ihr nächster Berater ist: " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
-                    sendMessage(sender, responseText);
-                }
-                });
-              }
-            });
-    }
-    if(!accessAPI && !callAllianzAPI)
+    if(!accessAPI)
         sendMessage(sender, responseText);
     }
 };
