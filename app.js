@@ -14,8 +14,8 @@ var app = express();
 var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXLKwF41VZBSoIxd7xaXuKW7hlqznXelry9u05Gg51SsZAwUM878wr3rzGPVzpH32gkq1Q3HZAk2YdQhN7FGJ2W1ieUrsDwVKzHqb1OEQfpUgZDZD";
 
 var context = {};
+var matches = {};
 var sender;
-var foundJob;
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -93,12 +93,17 @@ function processResponse(err, response) {
         if(responseArray.indexOf("betrag") > -1) {
             checkBerufe(context.berufeingabe);
         }
+        if(responseArray.indexOf("Zusammenfassung init") > -1) {
+            if(matches.bestMatch.rating < 1.1) {
+                responseText = responseText + " Bei Ihrem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
+            }
+        }
     if(!accessAPI)
         sendMessage(sender, responseText);
     }
 };
 
-
+//Access the Allianz Berufsliste API
 function checkBerufe(berufeingabe) {
     request({
         url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/berufeliste",
@@ -111,7 +116,7 @@ function checkBerufe(berufeingabe) {
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
 
-            var matches = stringSimilarity.findBestMatch(berufeingabe, body);
+            matches = stringSimilarity.findBestMatch(berufeingabe, body);
             context.berufeingabe = matches.bestMatch.target;
         }
         else {
