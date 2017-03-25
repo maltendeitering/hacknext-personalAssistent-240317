@@ -81,7 +81,7 @@ function processResponse(err, response) {
     else {
         context = response.context;
         console.log(response.output);
-        responseText = response.output.toString();
+        responseText = response.output.text.toString();
         var responseArray = response.output.nodes_visited;
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
