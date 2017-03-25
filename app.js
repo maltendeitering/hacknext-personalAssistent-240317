@@ -113,14 +113,10 @@ function checkBerufe(berufeingabe) {
 
             var matches = stringSimilarity.findBestMatch(berufeingabe, body);
 
-            if(matches.bestMatch.rating > 0.75) {
-                foundJob = matches.bestMatch.target;
-                console.log("Value1: " + context.berufeingabe);
-                console.log("Value2: " + foundJob);
-            }
-            else {
-                console.log("Meinten Sie: " + matches.bestMatch.target + " ?");
-            }
+            foundJob = matches.bestMatch.target;
+            context.berufeingabe = matches.bestMatch.target;
+            console.log("Value1: " + context.berufeingabe);
+            console.log("Value2: " + foundJob);
         }
         else {
             console.log("Error: " + error);
