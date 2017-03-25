@@ -84,10 +84,16 @@ function processResponse(err, response) {
         var responseArray = response.output.nodes_visited;
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
-
             accessAPI = true;
+            callAllianzAPI(context, responseText);
+    }
+    if(!accessAPI)
+        sendMessage(sender, responseText);
+    }
+};
 
-            var contract = {
+function callAllianzAPI(context, responseText) {
+    var contract = {
             "vertrag":
             {
               "produkt": context.produkt,
@@ -114,43 +120,13 @@ function processResponse(err, response) {
             if (!error && res.statusCode == 200) {
                 console.log(JSON.stringify(body));
                 if(body.status === 'OK') {
-                    responseText = responseText + " Versicherungsprämie: " + body.beitrag.netto;
+                    responseText = responseText + " Versicherungsprämie (netto): " + body.beitrag.netto + "€";
                     console.log(responseText);
                     sendMessage(sender, responseText);
                 }
             }
         });
-    }
-    if(!accessAPI)
-        sendMessage(sender, responseText);
-    }
 };
-
-
-// // Process the conversation response.
-// function processResponse(err, response) {
-//       if (err) {
-//         console.error(err); // something went wrong
-//         return;
-//       }
-
-//     // If an intent was detected, log it out to the console.
-//     if (response.intents.length > 0) {
-//         console.log('Detected intent: #' + response.intents[0].intent);
-//     }
-  
-//     // Display the output from dialog, if any.
-//     if (response.output.text.length != 0) {
-//       console.log(response.output.text[0]);
-//     }
-
-//     // Send back the context to maintain state.
-//     conversation.message({
-//                   input: { text: newMessage },
-//                   context : response.context,
-//                 }, processResponse)
-// }
-
 
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 var port = (process.env.VCAP_APP_PORT || 3000);
