@@ -86,6 +86,7 @@ function processResponse(err, response) {
         responseText = response.output.text.toString();
         var responseArray = response.output.nodes_visited;
 
+        //Filter for specific conversation nodes
         if(responseArray.indexOf("weitergabe_API") > -1) {
             accessAPI = true;
             callAllianzAPI(context, responseText);
@@ -94,8 +95,8 @@ function processResponse(err, response) {
             checkBerufe(context.berufeingabe);
         }
         if(responseArray.indexOf("Zusammenfassung init") > -1) {
-            if(matches.bestMatch.rating < 1.1) {
-                responseText = responseText + " Bei Ihrem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
+            if(matches.bestMatch.rating < 0.5) {
+                responseText = responseText + " Bei deinem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
             }
         }
     if(!accessAPI)
