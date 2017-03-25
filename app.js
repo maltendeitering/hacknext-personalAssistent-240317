@@ -80,11 +80,8 @@ function processResponse(err, response) {
     }
     else {
         context = response.context;
-        console.log(JSON.stringify(response));
-        //Build response message
-        for (i = 0; i < response.output.length; i++) {
-            responseText = responseText + response.output.text[i];
-        }
+        console.log(response.output);
+        responseText = response.output.text[0];
         var responseArray = response.output.nodes_visited;
 
         if(responseArray.indexOf("weitergabe_API") > -1) {
