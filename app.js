@@ -100,7 +100,8 @@ function processResponse(err, response) {
                 responseText = responseText + " Bei deinem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
             }
         }
-        if(responseArray.indexOf("test") > -1) {
+        if(responseArray.indexOf("suche_vertreter") > -1) {
+            accessGoogleAPI = true;
             console.log("Adresse: " + context.address);
             request('https://maps.googleapis.com/maps/api/geocode/json?address=' + context.address, function (error, response, body) {
               if (!error && response.statusCode == 200) {
