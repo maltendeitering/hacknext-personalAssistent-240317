@@ -16,6 +16,8 @@ var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXL
 var context = {};
 var matches = {};
 var sender;
+var price;
+var response_text;
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -129,6 +131,7 @@ function checkBerufe(berufeingabe) {
 
 //This function invokes the Allianz API call
 function callAllianzAPI(context, responseText) {
+    response_text = responseText;
     var contract = {
             "vertrag":
             {
@@ -155,6 +158,7 @@ function callAllianzAPI(context, responseText) {
             }, function (error, res, body) {
             if (!error && res.statusCode == 200) {
                 if(body.status === 'OK') {
+                    price = body.beitrag.netto;
                     request('https://maps.googleapis.com/maps/api/geocode/json?address=Marienplatz, Muenchen', function (error, response, body) {
                       if (!error && response.statusCode == 200) {
                         var importedJSON = JSON.parse(body);
@@ -175,7 +179,7 @@ function callAllianzAPI(context, responseText) {
                          
                             console.log(importedJSON.results[0].name);
                             console.log(importedJSON.results[0].vicinity);
-                            var responseText = responseText + " Versicherungsprämie (netto, monatlich): " + body.beitrag.netto + "€. Dein nächster Berater ist: " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
+                            var responseText = response_text + " Versicherungsprämie (netto, monatlich): " + price + "€. Dein nächster Berater ist: " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
                             sendMessage(sender, responseText);
                         }
                         });
