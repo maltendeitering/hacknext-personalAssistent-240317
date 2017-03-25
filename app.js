@@ -110,8 +110,8 @@ function processResponse(err, response) {
                 importedJSON = importedJSON.results[0];
 
                 //console.log(importedJSON.geometry.location);
-                var lat= importedJSON.geometry.location.lat
-                var lng=importedJSON.geometry.location.lng
+                var lat= importedJSON.geometry.location.lat;
+                var lng=importedJSON.geometry.location.lng;
                 //console.log (lat);
                 //console.log (lng);
                 
