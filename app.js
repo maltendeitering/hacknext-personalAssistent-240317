@@ -76,6 +76,7 @@ function sendMessage(sender,text) {
 function processResponse(err, response) {
     var responseText;
     var accessAPI = false;
+    var accessGoogleAPI = false;
 
     if (err) {
         res.send('Error in Watson Conversation');
@@ -86,7 +87,7 @@ function processResponse(err, response) {
         responseText = response.output.text.toString();
         var responseArray = response.output.nodes_visited;
 
-        //Filter for specific conversation nodes
+        //Call APIs on specific conversation nodes
         if(responseArray.indexOf("weitergabe_API") > -1) {
             accessAPI = true;
             callAllianzAPI(context, responseText);
@@ -99,7 +100,36 @@ function processResponse(err, response) {
                 responseText = responseText + " Bei deinem Beruf war ich mir nicht ganz sicher. Stimmt dieser so?";
             }
         }
-    if(!accessAPI)
+        if(responseArray.indexOf("test") > -1) {
+            console.log("Adresse: " + context.address);
+            request('https://maps.googleapis.com/maps/api/geocode/json?address=' + context.address, function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                var importedJSON = JSON.parse(body);
+                
+                //console.log(importedJSON.results[0]);
+                importedJSON = importedJSON.results[0];
+
+                //console.log(importedJSON.geometry.location);
+                var lat= importedJSON.geometry.location.lat
+                var lng=importedJSON.geometry.location.lng
+                //console.log (lat);
+                //console.log (lng);
+                
+                
+                request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBAFHA-M8-_14BSARNkW737QlnsGj_JUIw&location='+lat+','+lng+'&rankby=distance&name=Allianz', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var importedJSON = JSON.parse(body);
+                 
+                    console.log(importedJSON.results[0].name);
+                    console.log(importedJSON.results[0].vicinity);
+                    var responseText = "Ihr nächster Berater ist: " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
+                    sendMessage(sender, responseText);
+                }
+                });
+              }
+            });
+    }
+    if(!accessAPI && !callAllianzAPI)
         sendMessage(sender, responseText);
     }
 };
