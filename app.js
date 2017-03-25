@@ -159,7 +159,7 @@ function callAllianzAPI(context, responseText) {
             if (!error && res.statusCode == 200) {
                 if(body.status === 'OK') {
                     price = body.beitrag.netto;
-                    request('https://maps.googleapis.com/maps/api/geocode/json?address=Marienplatz, Muenchen', function (error, response, body) {
+                    request('https://maps.googleapis.com/maps/api/geocode/json?address=Ostbahnhof, Muenchen', function (error, response, body) {
                       if (!error && response.statusCode == 200) {
                         var importedJSON = JSON.parse(body);
                         
@@ -179,7 +179,7 @@ function callAllianzAPI(context, responseText) {
                          
                             console.log(importedJSON.results[0].name);
                             console.log(importedJSON.results[0].vicinity);
-                            var responseText = response_text + " Versicherungsprämie (netto, monatlich): " + price + "€. Dein nächster Berater ist: " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
+                            var responseText = response_text + "/n Versicherungsprämie (netto, monatlich): " + price + "€. /n Falls du noch meinem Kollegen aus Fleisch und Blut reden willst ;) : " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
                             sendMessage(sender, responseText);
                         }
                         });
