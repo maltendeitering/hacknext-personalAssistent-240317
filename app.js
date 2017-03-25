@@ -138,8 +138,6 @@ function callAllianzAPI(context, responseText) {
               }
             }
 
-            console.log(contract);
-
             request({
             url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
             method: "POST",
@@ -155,7 +153,7 @@ function callAllianzAPI(context, responseText) {
                     sendMessage(sender, responseText);
                 }
                 else {
-                    responseText = "Für den angegebenen Beruf konnte leider keine Prämie berechnet werden.";
+                    responseText = body.error.text;
                     sendMessage(sender, responseText);
                 }
             }
