@@ -80,6 +80,7 @@ function processResponse(err, response) {
     }
     else {
         context = response.context;
+        console.log(response.output);
         responseText = response.output.text[0];
         var responseArray = response.output.nodes_visited;
 
@@ -92,6 +93,8 @@ function processResponse(err, response) {
     }
 };
 
+
+//This function invokes the Allianz API call
 function callAllianzAPI(context, responseText) {
     var contract = {
             "vertrag":
@@ -118,10 +121,12 @@ function callAllianzAPI(context, responseText) {
                 body: contract
             }, function (error, res, body) {
             if (!error && res.statusCode == 200) {
-                console.log(JSON.stringify(body));
                 if(body.status === 'OK') {
-                    responseText = responseText + " Versicherungsprämie (netto): " + body.beitrag.netto + "€";
-                    console.log(responseText);
+                    responseText = responseText + " Versicherungsprämie (netto, monatlich): " + body.beitrag.netto + "€";
+                    sendMessage(sender, responseText);
+                }
+                else {
+                    responseText = "Für den angegebenen Beruf konnte leider keine Prämie berechnet werden.";
                     sendMessage(sender, responseText);
                 }
             }
