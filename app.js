@@ -179,7 +179,7 @@ function callAllianzAPI(context, responseText) {
                          
                             console.log(importedJSON.results[0].name);
                             console.log(importedJSON.results[0].vicinity);
-                            var responseText = response_text + "/n Versicherungsprämie (netto, monatlich): " + price + "€. /n Falls du noch meinem Kollegen aus Fleisch und Blut reden willst ;) : " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
+                            var responseText = response_text + "\n Versicherungsprämie (netto, monatlich): " + price + "€. \n Falls du noch meinem Kollegen aus Fleisch und Blut reden willst ;) : " + importedJSON.results[0].name + " " + importedJSON.results[0].vicinity;
                             sendMessage(sender, responseText);
                         }
                         });
