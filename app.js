@@ -9,6 +9,7 @@ var conversation = new ConversationV1({
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
+var stringSimilarity = require('string-similarity');
 var app = express();
 var token = "EAAZABV7q4AjkBAPexL84ga1PYbhMgMXmOAhjzKZBdI0wZAdeiWsLP6JWn9bV5LwaXLKwF41VZBSoIxd7xaXuKW7hlqznXelry9u05Gg51SsZAwUM878wr3rzGPVzpH32gkq1Q3HZAk2YdQhN7FGJ2W1ieUrsDwVKzHqb1OEQfpUgZDZD";
 
@@ -87,12 +88,43 @@ function processResponse(err, response) {
         if(responseArray.indexOf("weitergabe_API") > -1) {
             accessAPI = true;
             callAllianzAPI(context, responseText);
-    }
+        }
+        if(responseArray.indexOf("betrag") > -1) {
+            checkBerufe(context.berufeingabe);
+        }
     if(!accessAPI)
         sendMessage(sender, responseText);
     }
 };
 
+
+function checkBerufe(berufeingabe) {
+    request({
+        url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/berufeliste",
+        method: "GET",
+        json: true,
+        headers: {
+            'Accept': 'application/json',
+            'Accept-Charset': 'utf-8'
+        }
+    }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+
+            var matches = stringSimilarity.findBestMatch(berufeingabe, body);
+
+            if(matches.bestMatch.rating > 0.75) {
+                context.berufeingabe = matches.bestMatch.target;
+                console.log(context.berufeingabe);
+            }
+            else {
+                console.log("Meinten Sie: " + matches.bestMatch.target + " ?");
+            }
+        }
+        else {
+            console.log("Error: " + error);
+        }
+    });
+};
 
 //This function invokes the Allianz API call
 function callAllianzAPI(context, responseText) {
