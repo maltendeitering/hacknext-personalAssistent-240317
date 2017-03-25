@@ -112,17 +112,14 @@ function checkBerufe(berufeingabe) {
       if (!error && response.statusCode == 200) {
 
             var matches = stringSimilarity.findBestMatch(berufeingabe, body);
-
-            foundJob = matches.bestMatch.target;
             context.berufeingabe = matches.bestMatch.target;
-            console.log("Value1: " + context.berufeingabe);
-            console.log("Value2: " + foundJob);
         }
         else {
             console.log("Error: " + error);
         }
     });
 };
+
 
 //This function invokes the Allianz API call
 function callAllianzAPI(context, responseText) {
@@ -140,6 +137,8 @@ function callAllianzAPI(context, responseText) {
                 "berufeingabe": context.berufeingabe
               }
             }
+
+            console.log(contract);
 
             request({
             url: "https://www.allianz.de/oneweb/ajax/aspro/multiofferlebenservice/quickquote/",
